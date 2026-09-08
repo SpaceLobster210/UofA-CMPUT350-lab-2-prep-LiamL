@@ -123,19 +123,25 @@ private:
         bird.velocityY += GRAVITY;
 
         // ====== ====== ======
-        // TODO: (Q3)
+        // Q3:
         //  - Update bird position according to the rule that bird's y-position
         //    should have bird's y-velocity added to it every frame (assume dt = 1).
         //    Should be equivalent to: bird.positionY += bird.velocityY;
         //  - Note: bird's x-coordinate will alway be exactly 100.f
         // ====== ====== ======
+        float birdY = bird.birdShape.getPosition().y + bird.velocityY;
+        bird.birdShape.setPosition({INIT_X, birdY});
 
         // ====== ====== ======
-        // TODO: (Q3)
+        // Q3:
         //  - Check if the bird has exceeded the bounds of the screen
         //    (i.e., if it's no longer visible). If not, game should reset by clearing
         //    the tubes and restarting the game (setting the bird back to original initial position)
         // ====== ====== ======
+        if (birdY < 0 || birdY > WINDOW_HEIGHT) {
+            resetTubes();
+            bird.birdShape.setPosition({INIT_X, INIT_Y});
+        } 
     }
 
     void updateTubes() {
