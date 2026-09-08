@@ -141,6 +141,7 @@ private:
         if (birdY < 0 || birdY > WINDOW_HEIGHT) {
             resetTubes();
             bird.birdShape.setPosition({INIT_X, INIT_Y});
+            bird.birdShape.velocityY = INITIAL_BIRD_VELOCITY_Y;
         } 
     }
 
@@ -189,6 +190,7 @@ private:
         if (tubeCollision) {
             resetTubes();
             bird.birdShape.setPosition({INIT_X, INIT_Y});
+            bird.birdShape.velocityY = INITIAL_BIRD_VELOCITY_Y;
         } 
     }
 
@@ -213,8 +215,8 @@ void handleInput(sf::Window& window, GameState& gameState, const ResourceManager
         // Q2:
         //  implement jump logic (the key press should be space) and play jump sound fx
         // ====== ====== ======
-        if (const auto* textEntered = event->getIf<sf::Event::TextEntered>()) {
-            if (textEntered->unicode == 32) {
+        if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+            if (keyPressed->scancode == sf::Keyboard::Scan::Space) {
                 gameState.bird.velocityY = JUMP_SPEED;
                 resources.jumpSound->play();
             }
@@ -233,7 +235,7 @@ void render(sf::RenderWindow& window, const GameState& gameState) {
     // ====== ====== ======
     // Q1: Draw bird
     // ====== ====== ======
-    window.draw(gameState.bird.birdShape)
+    window.draw(gameState.bird.birdShape);
     window.display();
 }
 
@@ -265,11 +267,11 @@ int main() {
         //            std::cout << "value is " << *intPtr << '\n';
         //            std::cout << "raw address is " << intPtr.get() << '\n';
         // ====== ====== ======
+        resources.jumpSoundBuffer.reset(new sf::SoundBuffer());
         if (!resources.jumpSoundBuffer->loadFromFile("jump.wav")) {
             std::cerr << "Warning: Could not load jump.wav\n";
         }
-        sf::Sound jumpWAV(*resources.jumpSoundBuffer);
-        *resources.jumpSound = jumpWAV;
+        resources.jumpSound.reset(new sf::Sound(*resources.jumpSoundBuffer));
 
         bool shouldQuit = false;
         // Main game loop
