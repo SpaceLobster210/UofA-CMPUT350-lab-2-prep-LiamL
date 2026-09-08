@@ -165,19 +165,31 @@ private:
 
     void checkCollisions() {
         // ====== ====== ======
-        // TODO: (Q4)
+        // Q4:
         //  Check for bird-tube collision using SFML Rect methods: getGlobalBounds() and
         //  findIntersection(). getGlobalBounds() will return a bounding box for the bird
         //  findIntersection() returns an sf::optional<sf::Rect>  (which can be
         //  implicitly converted to a boolean value) depending on whether a rectangle intersects
         //  with another
         // ====== ====== ======
+        bool tubeCollision = false;
+        sf::FloatRect birdBounds = bird.birdShape.getGlobalBounds();
+        for (auto& tube : tubes) {
+            if (tube.topTube.findIntersection(birdBounds) || tube.bottomTube.findIntersection(birdBounds)) {
+                tubeCollision = true;
+                break;
+            }
+        }
 
         // ====== ====== ======
-        // TODO: (Q4)
+        // Q4:
         //  If bird hits tube, game should reset by resetting the tubes and resetting the bird
         //  to its initial state (i.e., restarting the game)
         // ====== ====== ======
+        if (tubeCollision) {
+            resetTubes();
+            bird.birdShape.setPosition({INIT_X, INIT_Y});
+        } 
     }
 
 public:
