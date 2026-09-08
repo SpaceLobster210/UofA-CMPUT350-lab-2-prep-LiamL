@@ -141,7 +141,7 @@ private:
         if (birdY < 0 || birdY > WINDOW_HEIGHT) {
             resetTubes();
             bird.birdShape.setPosition({INIT_X, INIT_Y});
-            bird.birdShape.velocityY = INITIAL_BIRD_VELOCITY_Y;
+            bird.velocityY = INITIAL_BIRD_VELOCITY_Y;
         } 
     }
 
@@ -176,7 +176,7 @@ private:
         bool tubeCollision = false;
         sf::FloatRect birdBounds = bird.birdShape.getGlobalBounds();
         for (auto& tube : tubes) {
-            if (tube.topTube.findIntersection(birdBounds) || tube.bottomTube.findIntersection(birdBounds)) {
+            if (tube.topTube.getGlobalBounds().findIntersection(birdBounds) || tube.bottomTube.getGlobalBounds().findIntersection(birdBounds)) {
                 tubeCollision = true;
                 break;
             }
@@ -190,7 +190,7 @@ private:
         if (tubeCollision) {
             resetTubes();
             bird.birdShape.setPosition({INIT_X, INIT_Y});
-            bird.birdShape.velocityY = INITIAL_BIRD_VELOCITY_Y;
+            bird.velocityY = INITIAL_BIRD_VELOCITY_Y;
         } 
     }
 
